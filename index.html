@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>El Ángel Cantor de la Verdad — 5 Fases</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Fondo de cielo estrellado sutil */
+    .starfield {
+      background:
+        radial-gradient(1200px 600px at 80% -100px, rgba(255,255,255,0.06), transparent 60%),
+        radial-gradient(900px 500px at 10% -200px, rgba(255,255,255,0.05), transparent 60%),
+        radial-gradient(600px 300px at 50% 120%, rgba(255,255,255,0.07), transparent 60%),
+        linear-gradient(145deg, #0f172a 0%, #141a35 35%, #1d254e 70%, #2a2f63 100%);
+    }
+    /* Bruma luminosa detrás de las tarjetas */
+    .glow {
+      position: absolute;
+      inset: -2px;
+      border-radius: 1.25rem;
+      background: radial-gradient(600px 300px at 30% 10%, rgba(168, 85, 247, 0.18), transparent 60%),
+                  radial-gradient(500px 250px at 80% 0%, rgba(59, 130, 246, 0.18), transparent 60%),
+                  radial-gradient(700px 350px at 70% 100%, rgba(16, 185, 129, 0.16), transparent 60%);
+      filter: blur(18px);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .slide-enter {
+      transform: translateY(10px) scale(0.98);
+      opacity: 0;
+    }
+    .slide-enter-active {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+      transition: all 420ms cubic-bezier(.2,.8,.2,1);
+    }
+    .slide-exit {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+    .slide-exit-active {
+      transform: translateY(-10px) scale(0.98);
+      opacity: 0;
+      transition: all 300ms ease;
+    }
+    /* Enfoques visibles para accesibilidad */
+    .focus-ring:focus-visible {
+      outline: 3px solid rgba(168,85,247,.7);
+      outline-offset: 2px;
+      border-radius: .75rem;
+    }
+    /* Indicador de progreso superior */
+    .progress-fill {
+      transition: width 350ms ease;
+    }
+  </style>
+</head>
+<body class="starfield min-h-screen text-slate-100 selection:bg-fuchsia-500/30 selection:text-white">
+  <div class="absolute inset-0 pointer-events-none">
+    <!-- estrellas pequeñas -->
+    <svg class="w-full h-full opacity-30" preserveAspectRatio="none">
+      <defs>
+        <radialGradient id="g" r="1">
+          <stop offset="0" stop-color="white" />
+          <stop offset="1" stop-color="transparent" />
+        </radialGradient>
+      </defs>
+      <!-- Un puñado de estrellas dispersas -->
+      <circle cx="10%" cy="20%" r="0.8" fill="url(#g)"/>
+      <circle cx="25%" cy="35%" r="0.6" fill="url(#g)"/>
+      <circle cx="40%" cy="12%" r="0.9" fill="url(#g)"/>
+      <circle cx="65%" cy="28%" r="0.7" fill="url(#g)"/>
+      <circle cx="72%" cy="18%" r="0.6" fill="url(#g)"/>
+      <circle cx="84%" cy="40%" r="0.9" fill="url(#g)"/>
+      <circle cx="15%" cy="75%" r="0.7" fill="url(#g)"/>
+      <circle cx="33%" cy="86%" r="0.8" fill="url(#g)"/>
+      <circle cx="58%" cy="68%" r="0.9" fill="url(#g)"/>
+      <circle cx="80%" cy="82%" r="0.7" fill="url(#g)"/>
+    </svg>
+  </div>
+
+  <main class="relative z-10 max-w-6xl mx-auto px-6 py-10 md:py-14">
+    <!-- Título y subtítulo -->
+    <header class="mb-6 md:mb-8">
+      <div class="flex items-center gap-3 md:gap-4">
+        <!-- Icono Ángel (SVG) -->
+        <div class="p-2.5 md:p-3 rounded-xl bg-white/5 ring-1 ring-white/10 backdrop-blur">
+          <svg width="28" height="28" viewBox="0 0 64 64" class="text-fuchsia-300">
+            <defs>
+              <linearGradient id="wings" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#a78bfa"/>
+                <stop offset="1" stop-color="#60a5fa"/>
+              </linearGradient>
+            </defs>
+            <!-- halo -->
+            <ellipse cx="32" cy="10" rx="12" ry="4" fill="none" stroke="url(#wings)" stroke-width="2"/>
+            <!-- cabeza -->
+            <circle cx="32" cy="20" r="5" fill="url(#wings)" opacity="0.9"/>
+            <!-- cuerpo -->
+            <path d="M24,50 C24,38 26,30 32,30 C38,30 40,38 40,50 Z" fill="url(#wings)" opacity="0.85"/>
+            <!-- alas -->
+            <path d="M20,28 C10,26 8,18 14,14 C20,10 26,16 26,22 C26,26 24,28 20,28 Z" fill="url(#wings)" opacity="0.8"/>
+            <path d="M44,28 C54,26 56,18 50,14 C44,10 38,16 38,22 C38,26 40,28 44,28 Z" fill="url(#wings)" opacity="0.8"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-2xl md:text-4xl font-semibold tracking-tight">El Ángel Cantor de la Verdad</h1>
+          <p class="text-sm md:text-base text-slate-300">Prólogo, 5 fases y epílogo: un viaje hacia la empatía, la sanación y la reconciliación</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Barra de progreso -->
+    <div class="mb-6">
+      <div class="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+        <div id="progress" class="h-full w-0 bg-gradient-to-r from-fuchsia-400 via-sky-400 to-emerald-400 progress-fill"></div>
+      </div>
+      <div class="mt-2 text-xs text-slate-300 flex items-center gap-2">
+        <span id="phaseLabel" class="inline-block px-2 py-0.5 rounded-full bg-white/5 ring-1 ring-white/10">Prólogo de 7</span>
+        <span id="phaseTitle" class="opacity-80">Un mundo en discordia</span>
+      </div>
+    </div>
+
+    <!-- Contenedor de diapositivas -->
+    <section id="slides" class="relative">
+      <div class="glow"></div>
+      <div class="relative bg-white/5 ring-1 ring-white/10 backdrop-blur-xl rounded-2xl p-5 md:p-8 overflow-hidden">
+        <!-- Controles arriba en móvil -->
+        <div class="flex items-center justify-between md:hidden mb-4">
+          <button id="prevTop" class="focus-ring inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 ring-1 ring-white/10 hover:bg-white/10 active:scale-95 transition">
+            <span aria-hidden="true">←</span>
+            <span class="text-sm">Anterior</span>
+          </button>
+          <button id="nextTop" class="focus-ring inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-fuchsia-500/20 hover:bg-fuchsia-500/30 text-fuchsia-100 ring-1 ring-fuchsia-400/30 active:scale-95 transition">
+            <span class="text-sm">Siguiente</span>
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
+
+        <!-- Slide dinámico -->
+        <div id="slideContainer" class="min-h-[400px] md:min-h-[420px] grid md:grid-cols-5 gap-6 items-center">
+          <!-- La tarjeta se inyecta aquí -->
+        </div>
+
+        <!-- Controles inferiores -->
+        <div class="mt-6 flex flex-col md:flex-row md:items-center gap-4">
+          <!-- Dots -->
+          <div class="flex gap-2 flex-wrap">
+            <button class="dot focus-ring w-8 h-8 rounded-full bg-white/10 ring-1 ring-white/10 hover:bg-white/20 transition" aria-label="Prólogo"></button>
+            <button class="dot focus-ring w-8 h-8 rounded-full bg-white/10 ring-1 ring-white/10 hover:bg-white/20 transition" aria-label="Fase 1"></button>
+            <button class="dot focus-ring w-8 h-8 rounded-full bg-white/10 ring-1 ring-white/10 hover:bg-white/20 transition" aria-label="Fase 2"></button>
+            <button class="dot focus-ring w-8 h-8 rounded-full bg-white/10 ring-1 ring-white/10 hover:bg-white/20 transition" aria-label="Fase 3"></button>
+            <button class="dot focus-ring w-8 h-8 rounded-full bg-white/10 ring-1 ring-white/10 hover:bg-white/20 transition" aria-label="Fase 4"></button>
+            <button class="dot focus-ring w-8 h-8 rounded-full bg-white/10 ring-1 ring-white/10 hover:bg-white/20 transition" aria-label="Fase 5"></button>
+            <button class="dot focus-ring w-8 h-8 rounded-full bg-white/10 ring-1 ring-white/10 hover:bg-white/20 transition" aria-label="Epílogo"></button>
+          </div>
+          <div class="md:ml-auto flex items-center gap-3">
+            <button id="prev" class="focus-ring inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 ring-1 ring-white/10 hover:bg-white/10 active:scale-95 transition">
+              <span aria-hidden="true">←</span>
+              <span>Anterior</span>
+            </button>
+            <button id="next" class="focus-ring inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-fuchsia-500/20 hover:bg-fuchsia-500/30 text-fuchsia-100 ring-1 ring-fuchsia-400/30 active:scale-95 transition">
+              <span>Siguiente</span>
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <p class="mt-4 text-xs text-slate-400">Sugerencia: usa ← y → del teclado o desliza en móvil.</p>
+    </section>
+  </main>
+
+  <script>
+    // Contenido del prólogo, 5 fases y epílogo (texto ampliado para presentación)
+    const phases = [
+      {
+        id: 0,
+        title: "Prólogo — Un mundo en discordia",
+        tag: "Prólogo",
+        quote: "“La sombra de la incomprensión cubre a la humanidad.”",
+        points: [
+          "Olvido de la esencia humana: comprender al otro.",
+          "La ausencia de empatía alimenta guerras, desconfianza y rencor.",
+          "En el cielo se gesta un llamado: un Ángel nacido de la verdad.",
+          "Su misión: recordarnos cómo ver y sentir el dolor ajeno."
+        ],
+        colorFrom: "from-indigo-400",
+        colorTo: "to-fuchsia-400"
+      },
+      {
+        id: 1,
+        title: "Fase 1 — Conexión con uno mismo",
+        tag: "Fase 1",
+        quote: "“¿Qué siento realmente?”",
+        points: [
+          "Detente: escucha tus pensamientos, emociones y dudas.",
+          "Abre puertas internas para hallar la raíz del dolor.",
+          "Comprender al otro nace al comprenderte primero.",
+          "La desconexión interna es origen de la falta de empatía."
+        ],
+        colorFrom: "from-fuchsia-400",
+        colorTo: "to-sky-400"
+      },
+      {
+        id: 2,
+        title: "Fase 2 — Reflexión profunda sobre el otro",
+        tag: "Fase 2",
+        quote: "“Ponte en los zapatos del otro.”",
+        points: [
+          "Ejercicio profundo: mirar el mundo con sus ojos.",
+          "Sentir sus luchas y deseos; no es empatía superficial.",
+          "Diferencias e ideologías se disuelven en la vibración del canto.",
+          "Detrás de cada acto hay una historia que merece ser oída."
+        ],
+        colorFrom: "from-sky-400",
+        colorTo: "to-emerald-400"
+      },
+      {
+        id: 3,
+        title: "Fase 3 — Autotransformación",
+        tag: "Fase 3",
+        quote: "“Ser puente de sanación.”",
+        points: [
+          "Mirarte a través del otro y soltar el juicio.",
+          "Despojarse de prejuicios y estigmas con honestidad.",
+          "Transformarte para sanar y poder acompañar mejor.",
+          "La empatía auténtica impulsa cambios interiores reales."
+        ],
+        colorFrom: "from-emerald-400",
+        colorTo: "to-amber-300"
+      },
+      {
+        id: 4,
+        title: "Fase 4 — Sanación del corazón",
+        tag: "Fase 4",
+        quote: "“El dolor de uno es el dolor de todos.”",
+        points: [
+          "Al comprender, no puedes permanecer indiferente.",
+          "La compasión se convierte en acción: aliviar y acompañar.",
+          "Sanar en conjunto fortalece el tejido humano.",
+          "El bienestar de uno depende del bienestar de todos."
+        ],
+        colorFrom: "from-amber-300",
+        colorTo: "to-rose-400"
+      },
+      {
+        id: 5,
+        title: "Fase 5 — Reconciliación con el mundo",
+        tag: "Fase 5",
+        quote: "“La empatía hecha acción, paz profunda.”",
+        points: [
+          "Tras el viaje, el corazón halla calma y claridad.",
+          "La empatía deja de ser idea y se vuelve práctica.",
+          "Cuidarnos mutuamente como elección cotidiana.",
+          "Celebrar la vida que florece cuando nos entendemos."
+        ],
+        colorFrom: "from-rose-400",
+        colorTo: "to-fuchsia-400"
+      },
+      {
+        id: 6,
+        title: "Epílogo — El eco del canto",
+        tag: "Epílogo",
+        quote: "“El canto persiste en cada gesto de bondad.”",
+        points: [
+          "El Ángel no impone: inspira caminos de comprensión.",
+          "Cada mirada empática crea un eslabón de paz.",
+          "El viaje continúa en cada encuentro humano.",
+          "Sembrar verdad y ternura para un mundo reconciliado."
+        ],
+        colorFrom: "from-fuchsia-400",
+        colorTo: "to-indigo-400"
+      }
+    ];
+
+    const slideContainer = document.getElementById('slideContainer');
+    const dots = Array.from(document.querySelectorAll('.dot'));
+    const prev = document.getElementById('prev');
+    const next = document.getElementById('next');
+    const prevTop = document.getElementById('prevTop');
+    const nextTop = document.getElementById('nextTop');
+    const dotLabels = ['Prólogo','Fase 1','Fase 2','Fase 3','Fase 4','Fase 5','Epílogo'];
+    dots.forEach((d, i) => d.setAttribute('aria-label', dotLabels[i]));
+    const progress = document.getElementById('progress');
+    const phaseLabel = document.getElementById('phaseLabel');
+    const phaseTitle = document.getElementById('phaseTitle');
+
+    let index = 0; // 0..6 (prólogo..epílogo)
+
+    function renderSlide(newIndex, direction = 1) {
+      const phase = phases[newIndex];
+
+      // Actualiza barra y etiquetas
+      const pct = ((newIndex + 1) / phases.length) * 100;
+      progress.style.width = pct + '%';
+      const label = phase.tag === 'Prólogo' ? `Prólogo de ${phases.length}` : (phase.tag === 'Epílogo' ? `Epílogo de ${phases.length}` : `${phase.tag} de ${phases.length}`);
+      phaseLabel.textContent = label;
+      phaseTitle.textContent = phase.title.replace(/^Fase \d+ \u2014\s*/, '').replace(/^Prólogo \u2014\s*/, '').replace(/^Epílogo \u2014\s*/, '');
+
+      // Dots activos
+      dots.forEach((d, i) => {
+        d.classList.toggle('ring-2', i === newIndex);
+        d.classList.toggle('ring-fuchsia-400/70', i === newIndex);
+        d.classList.toggle('bg-white/20', i === newIndex);
+      });
+
+      // Contenido de la tarjeta
+      const card = document.createElement('div');
+      card.className = 'relative md:col-span-5 slide-enter bg-gradient-to-br ' +
+                       `${phase.colorFrom} ${phase.colorTo} ` +
+                       'p-[1px] rounded-2xl';
+      card.setAttribute('role', 'group');
+      card.setAttribute('aria-label', `${phase.tag}: ${phase.title}`);
+
+      // interior con fondo translúcido
+      const inner = document.createElement('div');
+      inner.className = 'relative rounded-2xl bg-slate-900/60 p-5 md:p-8 ring-1 ring-white/10 grid md:grid-cols-2 gap-6';
+
+      // Columna 1: título, cita, badge
+      const left = document.createElement('div');
+      left.className = 'flex flex-col gap-4 justify-center';
+      left.innerHTML = `
+        <div class="inline-flex items-center gap-2">
+          <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-white/10 ring-1 ring-white/15">${phase.tag}</span>
+          <span class="hidden md:inline-block text-xs text-slate-300">Guía del Ángel</span>
+        </div>
+        <h2 class="text-2xl md:text-3xl font-semibold leading-tight">${phase.title}</h2>
+        <p class="text-slate-300 italic">${phase.quote}</p>
+        <!-- Breve desarrollo para exposición -->
+        <p class="text-sm text-slate-300/90 leading-relaxed">${
+          {
+            0: 'La humanidad ha olvidado mirar con compasión. De ese olvido nace un ser que no promete milagros, sino comprensión: un Ángel que canta la verdad y nos invita a recordar quiénes somos.',
+            1: 'El canto invita a pausar y mirar dentro. Al nombrar nuestras emociones, desactivamos la dureza que nos separa y abrimos espacio para comprender a los demás.',
+            2: 'Sentir al otro no es imaginar: es escuchar su historia con humildad. Al hacerlo, las diferencias se vuelven puentes y no murallas.',
+            3: 'Comprender inspira cambio. Al vernos en el espejo del otro, elegimos sanar lo propio para cuidar mejor lo común.',
+            4: 'Empatía en acto: acompañar, aliviar, sostener. La sanación es un tejido que se construye entre muchos corazones.',
+            5: 'La reconciliación llega cuando la empatía se vuelve hábito. Volvemos a habitar el mundo con cuidado y responsabilidad.',
+            6: 'Nada termina aquí: cada gesto compasivo prolonga el canto. Somos portadores de esa melodía en la vida diaria.'
+          }[phase.id] || ''
+        }</p>
+        <!-- Icono decorativo de nota/canto -->
+        <div class="flex items-center gap-3 text-fuchsia-200/90">
+          <svg width="26" height="26" viewBox="0 0 24 24" class="opacity-90">
+            <path fill="currentColor" d="M9 19c-1.657 0-3-1.343-3-3s1.343-3 3-3c.53 0 1.03.137 1.463.378V6a1 1 0 0 1 1-1h6.5a1 1 0 0 1 1 1v2.25a1 1 0 1 1-2 0V7h-4.5v8.622A2.997 2.997 0 0 1 12 16c-1.657 0-3 1.343-3 3z"/>
+          </svg>
+          <span class="text-sm">Un canto que invita a sentir y comprender.</span>
+        </div>
+      `;
+
+      // Columna 2: puntos
+      const right = document.createElement('div');
+      right.className = 'space-y-3';
+      const ul = document.createElement('ul');
+      ul.className = 'space-y-3';
+      phase.points.forEach((p, i) => {
+        const li = document.createElement('li');
+        li.className = 'flex items-start gap-3';
+        li.innerHTML = `
+          <span class="mt-1 inline-flex items-center justify-center w-5 h-5 rounded-full bg-white/10 ring-1 ring-white/15 text-[10px]">${i+1}</span>
+          <span class="text-slate-200">${p}</span>
+        `;
+        ul.appendChild(li);
+      });
+
+      // Llamado a la acción sutil
+      const cta = document.createElement('div');
+      cta.className = 'pt-2';
+      cta.innerHTML = `
+        <button data-next class="focus-ring inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/15 ring-1 ring-white/15 transition">
+          Continúa a la siguiente fase
+          <span aria-hidden="true">→</span>
+        </button>
+      `;
+
+      right.appendChild(ul);
+      right.appendChild(cta);
+
+      // Consejos de presentador
+      const notes = document.createElement('div');
+      notes.className = 'mt-4 text-xs text-slate-300/80';
+      notes.innerHTML = `
+        <details class="group open:animate-none">
+          <summary class="cursor-pointer inline-flex items-center gap-2 px-2 py-1 rounded bg-white/5 ring-1 ring-white/10 hover:bg-white/10">
+            <span>Notas para exponer</span>
+            <span class="opacity-70">(opcional)</span>
+          </summary>
+          <div class="mt-2 space-y-1 text-slate-300/90">
+            <p>${{
+              0: 'Contextualiza: nombra la crisis de empatía actual y enlázala con tu audiencia (escuela, empresa, comunidad).',
+              1: 'Invita a una pausa de 10 segundos de silencio. Pide que identifiquen una emoción y la nombren.',
+              2: 'Cuenta una anécdota breve donde entender al otro cambió una decisión.',
+              3: 'Propón un compromiso pequeño de cambio personal para esta semana.',
+              4: 'Sugiere una acción solidaria concreta que el grupo pueda realizar juntos.',
+              5: 'Cierra esta fase con una pregunta poderosa: ¿qué hábito de cuidado adoptarás mañana?',
+              6: 'Invita a que cada persona se lleve una “nota” del canto: un gesto diario de empatía.'
+            }[phase.id] || ''}</p>
+          </div>
+        </details>`;
+      right.appendChild(notes);
+
+      inner.appendChild(left);
+      inner.appendChild(right);
+      card.appendChild(inner);
+
+      // Transición: salida del actual y entrada del nuevo
+      const old = slideContainer.firstElementChild;
+      if (old) {
+        old.classList.remove('slide-enter', 'slide-enter-active');
+        old.classList.add('slide-exit');
+        requestAnimationFrame(() => {
+          old.classList.add('slide-exit-active');
+        });
+        // Quitar después de animar
+        setTimeout(() => {
+          if (old.parentNode) old.parentNode.removeChild(old);
+        }, 320);
+      }
+
+      slideContainer.appendChild(card);
+      // Forzar transición de entrada
+      requestAnimationFrame(() => {
+        card.classList.add('slide-enter-active');
+      });
+
+      // Botón "siguiente fase" dentro de la tarjeta
+      const inlineNext = card.querySelector('button[data-next]');
+      inlineNext.addEventListener('click', (e) => {
+        e.preventDefault();
+        go(1);
+      });
+    }
+
+    function go(delta) {
+      const newIndex = Math.min(Math.max(index + delta, 0), phases.length - 1);
+      if (newIndex === index) return;
+      index = newIndex;
+      renderSlide(index, Math.sign(delta));
+      updateButtons();
+    }
+
+    function jumpTo(i) {
+      if (i === index) return;
+      index = i;
+      renderSlide(index, 0);
+      updateButtons();
+    }
+
+    function updateButtons() {
+      const isFirst = index === 0;
+      const isLast = index === phases.length - 1;
+      next.textContent = isLast ? 'Finalizar' : 'Siguiente';
+      nextTop.textContent = isLast ? 'Finalizar' : 'Siguiente';
+      prev.disabled = prevTop.disabled = isFirst;
+      next.disabled = nextTop.disabled = isLast;
+
+      [prev, prevTop].forEach(b => {
+        b.classList.toggle('opacity-50', isFirst);
+        b.classList.toggle('cursor-not-allowed', isFirst);
+      });
+      [next, nextTop].forEach(b => {
+        b.classList.toggle('opacity-50', isLast);
+        b.classList.toggle('cursor-not-allowed', isLast);
+      });
+    }
+
+    // Listeners
+    prev.addEventListener('click', (e) => { e.preventDefault(); go(-1); });
+    next.addEventListener('click', (e) => { e.preventDefault(); go(1); });
+    prevTop.addEventListener('click', (e) => { e.preventDefault(); go(-1); });
+    nextTop.addEventListener('click', (e) => { e.preventDefault(); go(1); });
+
+    dots.forEach((d, i) => {
+      d.addEventListener('click', (e) => {
+        e.preventDefault();
+        jumpTo(i);
+      });
+    });
+
+    // Teclado
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { go(1); }
+      if (e.key === 'ArrowLeft') { go(-1); }
+    });
+
+    // Deslizar en móvil
+    let touchStartX = null;
+    slideContainer.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].clientX;
+    }, { passive: true });
+    slideContainer.addEventListener('touchend', (e) => {
+      if (touchStartX === null) return;
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const threshold = 40;
+      if (dx > threshold) go(-1);
+      if (dx < -threshold) go(1);
+      touchStartX = null;
+    }, { passive: true });
+
+    // Inicializar
+    renderSlide(index, 0);
+    updateButtons();
+
+    // Exportar resumen a texto simple (descarga local)
+    const exportBtn = document.createElement('button');
+    exportBtn.className = 'fixed bottom-6 right-6 px-4 py-2 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-100 ring-1 ring-emerald-400/30 shadow-lg focus-ring';
+    exportBtn.textContent = 'Descargar resumen';
+    document.body.appendChild(exportBtn);
+    exportBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const lines = phases.map(p => `# ${p.title}\n- ${p.quote}\n${p.points.map(pt => `  • ${pt}`).join('\n')}`).join('\n\n');
+      const blob = new Blob([lines], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'angel-cantor-resumen.txt';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 0);
+    });
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9843486c677302e0',t:'MTc1ODcyNzQwNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
